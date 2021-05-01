@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Data Admissão</th>
+        <th>Opções</th>
+    </tr>
+        {% for pessoa in pessoas %}
+            <tr>
+                <td>{{ pessoa[0] }}</td>
+                <td>{{ pessoa[1].split(' ')[0] }}</td>
+                <td>{{ pessoa[2].strftime('%d/%m/%Y') }}</td>
+                <td>
+                    <form method="POST" action="http://127.0.0.1:5000/user/delete">
+                        <input name="id_pessoa" value="{{ pessoa[0] }}" hidden>
+                        <button type="submit" class="btn-icon">
+                            Excluir
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+</table>
+
+
+
+<form action="http://127.0.0.1:5000/user/add" class="rounded form-add" method="POST" >
+    <div>
+        <h2>Formulário de adição</h2>
+        <input type="text" name="nome" placeholder="Nome" required>
+        <input type="text" name="rg" placeholder="RG (Sem pontuação)" maxlength="9" required>
+        <input type="text" name="cpf" placeholder="CPF (Sem pontuação)" maxlength="11" required>
+        <input type="date" name="data_nascimento" placeholder="Data de nascimento" required>
+        <input type="date" name="data_admissao" placeholder="Data de admissão" required>
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn-submit">Enviar</button>
+        </div>
+    </div>
+
+</form>
+
+{% endblock content %}

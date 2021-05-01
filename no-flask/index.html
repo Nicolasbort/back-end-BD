@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>API Python 3</title>
+</head>
+<body>
+    <div id="app">
+        <div class="toast" v-bind:class="[toastType, {'show': toastShow}]" >{{toastText}}</div>
+
+        <div class="container">
+    
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Data Admissão</th>
+                    <th>Opções</th>
+                </tr>
+                <tr v-for="pessoa in pessoas" :key="pessoa.id_pessoa">
+                    <td>{{ pessoa.id_pessoa }}</td>
+                    <td>{{ pessoa.nome }}</td>
+                    <td>{{ pessoa.data_admissao }}</td>
+                    <td>
+                        <button class="btn-icon" v-on:click="handleDelete" :id="pessoa.id_pessoa">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <form action="http://localhost:8080/user/add" class="rounded" method="POST" v-on:submit.prevent="handleSubmit" >
+                <div>
+                    <h2>Formulário de adição</h2>
+                    <input type="text" name="nome" placeholder="Nome" required>
+                    <input type="text" name="rg" placeholder="RG (Sem pontuação)" maxlength="9" v-on:blur="formatRG" required>
+                    <input type="text" name="cpf" placeholder="CPF (Sem pontuação)" maxlength="11" v-on:blur="formatCPF" required>
+                    <input type="date" name="data_nascimento" placeholder="Data de nascimento" required>
+                    <input type="date" name="data_admissao" placeholder="Data de admissão" required>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn-submit">Enviar</button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const apiURL = "http://0.0.0.0:8080"
+
+        let app = new Vue({
+            el: "#app",
+            
+            data: {
+                toastText: "",
+                toastType: "default",
+                toastShow: false,
+
+                pessoas: []
+            },
+
+            mounted() {
+                this.fetchData(apiURL)
+            },
+
+            methods: {
+                async fetchData(url) {
+                    const response = await fetch(apiURL + "/users")
+                    let pessoas = await response.json()
+
+                    this.pessoas = pessoas.map( (pessoa, idx) => {
+                        pessoa.nome = pessoa.nome.split(' ')[0]
+                        pessoa.data_admissao = new Date(pessoa.data_admissao).toLocaleDateString('pt-BR')
+                        return pessoa
+                    })
+                },
+                
+                async handleDelete(event) {
+                    const id = event.target.id
+                    const response = await fetch(apiURL + "/user/delete/" + id)
+                    const json = await response.json()
+
+                    if (json.error) this.showToast(json.error, "error", 4000)
+                    else {
+                        this.pessoas.forEach( (pessoa, idx) => {
+                            if (pessoa.id_pessoa == id){
+                                this.pessoas.splice(idx, 1)
+                                return;
+                            }
+                        })
+                        this.showToast(json.message, "success", 4000)
+                    }
+                },
+            
+                async handleSubmit(e) {
+                    let formData = new FormData(e.target)
+                    const data = new URLSearchParams();
+
+                    for (const pair of formData) data.append(pair[0], pair[1]);
+                    
+                    const response = await fetch(e.target.action, {
+                        method: e.target.method,
+                        body: data,
+                    })
+
+                    let json = await response.json()
+                
+                    if (json.error) this.showToast(json.error, "error", 4000)
+                    else{
+                        json.pessoa.nome          = json.pessoa.nome.split(' ')[0]
+                        json.pessoa.data_admissao = new Date(json.pessoa.data_admissao).toLocaleDateString('pt-BR')
+                        this.pessoas.push(json.pessoa)
+                        this.showToast(`Pessoa ${json.pessoa.nome} adicionada!`, "success", 4000)
+                    }
+                },
+
+                showToast(message, type, delay) {
+                    this.toastText = message
+                    this.toastType = type
+                    this.toastShow = true
+
+                    setTimeout( () => {
+                        this.toastText = ""
+                        this.toastType = "default"
+                        this.toastShow = false
+                    }, delay)
+                },
+
+                formatRG(e){
+                    rg = e.target.value
+                    if (rg) rg = rg.replace(/\D/g,"").replace(/(\d{2})(\d{3})(\d{3})(\d{1})$/,"$1.$2.$3-$4");
+                    e.target.value = rg
+                },
+
+                formatCPF(e){
+                    cpf = e.target.value
+                    cpf = cpf.replace(/[^\d]/g, "");
+
+                    e.target.value = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                },
+
+
+            }   
+        })
+    </script>
+
+</body>
+</html>

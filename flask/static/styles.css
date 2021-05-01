@@ -1,0 +1,201 @@
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.text-muted {
+    margin-top: 0;
+    font-size: 0.8rem;
+    color: rgb(105, 105, 105);
+}
+
+.rounded {
+    border-radius: 5px;
+}
+
+.btn-submit {
+    padding: 5px;
+    color: white;
+    background-color: rgb(69 100 134) !important;
+    border: none;
+    border-radius: 5px;
+    width: 25%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-icon {
+    color: white;
+    background-color: rgb(69 100 134) !important;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+
+.container {
+    margin: auto;
+    width: 75%;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+
+table {
+    border-radius: 5px;
+    border-collapse: collapse;
+    margin: auto;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 500px;
+    background-color: white;
+    box-shadow: 1px 1px 9px 3px #6b6b6b;
+}
+
+tr {
+    padding: 8px;
+    line-height: 35px;
+    padding: 10px;
+    text-align: center;
+}
+
+tr:hover {
+    background-color:#45648659 !important;
+}
+
+tr th {
+    border: none;
+    line-height: 20px;
+    padding: 12px;
+    background-color: rgb(69 100 134) !important;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.form-add {
+    margin: 1.5rem auto ;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 500px;
+    background-color: white;
+    box-shadow: 1px 1px 9px 3px #6b6b6b;
+}
+
+.form-add div {
+    padding: 20px;
+}
+
+input {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=text], select {
+    padding: 1rem;
+}
+
+input[type=date] {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+::-webkit-datetime-edit { padding: 1em; }
+::-webkit-datetime-edit-fields-wrapper { background: white; }
+::-webkit-datetime-edit-text { color: rgb(150, 150, 150);; padding: 0 0.3em; }
+::-webkit-datetime-edit-month-field { color: rgb(150, 150, 150); }
+::-webkit-datetime-edit-day-field { color: rgb(150, 150, 150);; }
+::-webkit-datetime-edit-year-field { color: rgb(150, 150, 150);; }
+::-webkit-inner-spin-button { display: block;  }
+::-webkit-calendar-picker-indicator { margin-right: 1rem; font-size: 1.5rem;}
+::-webkit-calendar-picker-indicator:hover { cursor: pointer; opacity: 0.7;}
+
+
+.success {
+    background-color: #28a745!important;
+}
+
+.error {
+    background-color: #dc3545!important;
+}
+
+.default {
+    background-color: #6c757d!important;
+}
+
+.toast {
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    top: 30px;
+}
+
+.toast.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.3s;
+    -moz-animation: fadein 0.3s;
+    -ms-animation: fadein 0.3s;
+    -o-animation: fadein 0.3s;
+    animation: fadein 0.3s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {top: 0; opacity: 0;}
+    to {top: 30px; opacity: 1;}
+}
+  
+@keyframes fadein {
+    from {top: 0; opacity: 0;}
+    to {top: 30px; opacity: 1;}
+}
+
+@media screen and (max-width: 768px) {
+    table, .form-add {
+        width: 100%;
+    }   
+
+
+    tr th, tr {
+        font-size: 0.7rem;
+        text-align: left !important;
+    }
+
+    .form-add h2 {
+        font-size: 1.1rem !important;
+    }
+
+    .btn-icon, .btn-submit {
+        font-size: 0.7rem;
+    }
+
+}
